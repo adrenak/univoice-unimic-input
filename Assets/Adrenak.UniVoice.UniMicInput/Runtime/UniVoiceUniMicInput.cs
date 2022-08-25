@@ -10,18 +10,20 @@ namespace Adrenak.UniVoice.UniMicInput {
     public class UniVoiceUniMicInput : IAudioInput {
         public event Action<int, float[]> OnSegmentReady;
 
-        public int Frequency => mic.Frequency;
+        public int Frequency => Mic.Instance.Frequency;
 
-        public int ChannelCount => 
-        mic.AudioClip == null ? 0 : mic.AudioClip.channels;
+        public int ChannelCount =>
+            Mic.Instance.AudioClip == null ? 0 : Mic.Instance.AudioClip.channels;
 
-        public int SegmentRate => 1000 / mic.SampleDurationMS;
+        public int SegmentRate => 1000 / Mic.Instance.SampleDurationMS;
 
-        readonly Mic mic;
-
-        public UniVoiceUniMicInput(Mic mic) {
-            this.mic = mic;
-            mic.OnSampleReady += Mic_OnSampleReady;
+        public UniVoiceUniMicInput(int deviceIndex = 0, int frequency = 1600, int sampleLen = 100) {
+            if (Mic.Instance.Devices.Count == 0)
+                throw new Exception("Must have recording devices for Microphone input");
+            Mic.Instance.StopRecording();
+            Mic.Instance.ChangeDevice(deviceIndex);
+            Mic.Instance.StartRecording(frequency, sampleLen);
+            Mic.Instance.OnSampleReady += Mic_OnSampleReady;
         }
 
         void Mic_OnSampleReady(int segmentIndex, float[] samples) {
@@ -29,7 +31,7 @@ namespace Adrenak.UniVoice.UniMicInput {
         }
 
         public void Dispose() {
-            mic.OnSampleReady -= Mic_OnSampleReady;
+            Mic.Instance.OnSampleReady -= Mic_OnSampleReady;
         }
     }
 }
