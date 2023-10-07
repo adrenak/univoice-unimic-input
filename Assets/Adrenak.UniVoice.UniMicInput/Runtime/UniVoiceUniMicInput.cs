@@ -2,12 +2,16 @@
 
 using Adrenak.UniMic;
 
+using UnityEngine;
+
 namespace Adrenak.UniVoice.UniMicInput {
     /// <summary>
     /// An <see cref="IAudioInput"/> implementation based on UniMic.
     /// For more on UniMic, visit https://www.github.com/adrenak/unimic
     /// </summary>
     public class UniVoiceUniMicInput : IAudioInput {
+        const string TAG = "UniVoiceUniMicInput";
+
         public event Action<int, float[]> OnSegmentReady;
 
         public int Frequency => Mic.Instance.Frequency;
@@ -20,8 +24,10 @@ namespace Adrenak.UniVoice.UniMicInput {
         public UniVoiceUniMicInput(int deviceIndex = 0, int frequency = 16000, int sampleLen = 100) {
             if (Mic.Instance.Devices.Count == 0)
                 throw new Exception("Must have recording devices for Microphone input");
+
             Mic.Instance.SetDeviceIndex(deviceIndex);
             Mic.Instance.StartRecording(frequency, sampleLen);
+            Debug.unityLogger.Log(TAG, "Start recording.");
             Mic.Instance.OnSampleReady += Mic_OnSampleReady;
         }
 

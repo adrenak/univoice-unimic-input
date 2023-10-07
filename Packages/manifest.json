@@ -1,11 +1,10 @@
 {
   "dependencies": {
     "com.adrenak.unimic": "1.1.0",
-    "com.adrenak.univoice": "1.2.0",
-    "com.unity.collab-proxy": "1.14.12",
+    "com.adrenak.univoice": "3.0.0",
     "com.unity.ide.rider": "1.2.1",
     "com.unity.ide.visualstudio": "2.0.16",
-    "com.unity.test-framework": "1.1.30",
+    "com.unity.test-framework": "1.1.31",
     "com.unity.textmeshpro": "2.1.6",
     "com.unity.timeline": "1.2.18",
     "com.unity.ugui": "1.0.0",
